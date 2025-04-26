@@ -38,10 +38,7 @@ app.get("/",(req,res)=>{
   
     res.send("API Working")
 })
-// Serve frontend for all other routes
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
-  });
+
 
 app.listen(port, ()=>{
  console.log(`Server Started on http://localhost:${port}`);
