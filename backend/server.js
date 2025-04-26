@@ -15,6 +15,15 @@ const port = process.env.PORT || 4000;
 app.use(express.json())
 app.use(cors())
 
+// Serve frontend build
+app.use(express.static('frontend/dist', {
+    setHeaders: (res, path) => {
+      if (path.endsWith('.css')) {
+        res.set('Content-Type', 'text/css');
+      }
+    }
+  }));
+
 //Db comnnection
 connectDB();
 
@@ -25,11 +34,16 @@ app.use("/api/user",userRouter)
 app.use("/api/cart",cartRouter)
 app.use("/api/order",orderRouter)
 
-app.get("/",(req,res)=>{
+// app.get("/",(req,res)=>{
   
-    res.send("API Working")
-})
+//     res.send("API Working")
+// })
+// Serve frontend for all other routes
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+  });
 
 app.listen(port, ()=>{
  console.log(`Server Started on http://localhost:${port}`);
 })
+
